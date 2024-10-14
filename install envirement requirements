@@ -1,0 +1,23 @@
+Step 1: Set Up a Python Server with CNTK
+
+>> Install CNTK and Flask
+
+Step 2: Make sure you have Python installed, then install the required packages:
+
+>> pip install cntk flask pillow
+
+Step 3: Run the Python Server
+
+>> python server.py
+
+Step 4: Install Dependencies
+
+>> npm install @tensorflow/tfjs @tensorflow-models/mobilenet next react react-dom
+
+Step 5: Create the Next.js Front-End. So now, in your Next.js application, modify the code to communicate with the Python server. Install Axios (for making HTTP requests):
+
+>> npm install axios
+
+Step 6: Start the Next.js Application
+
+>> npm run dev
