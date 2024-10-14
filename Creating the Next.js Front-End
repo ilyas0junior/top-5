@@ -1,0 +1,159 @@
+Now, let's build a user interface using Next.js that can send images to the Python server and display the predictions.
+
+Step 2.1: Install Dependencies
+To make HTTP requests from Next.js to the Python server, install axios:
+>> npm install axios
+
+Step 2.2: Create the Next.js Page Component (pages/image-recognition.js)
+This component allows users to upload images, sends them to the Python server, and displays the results.
+
+jsx CODE :
+#####################################################################################################################################################
+import React, { useState, useRef } from "react";                                                                                                    
+import axios from "axios";
+import styles from "../styles/ImageRecognition.module.css";
+
+export default function ImageRecognition() {
+  const [image, setImage] = useState(null);
+  const [predictions, setPredictions] = useState("");
+  const fileInputRef = useRef();
+
+  const loadImage = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => setImage(reader.result);
+    reader.readAsDataURL(file);
+  };
+
+  const recognizeImage = async () => {
+    if (!fileInputRef.current.files[0]) return;
+
+    const formData = new FormData();
+    formData.append("image", fileInputRef.current.files[0]);
+
+    try {
+      const response = await axios.post("http://localhost:5000/predict", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setPredictions(response.data.prediction);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.header}>AI Image Recognition (CNTK)</h1>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={loadImage}
+        ref={fileInputRef}
+        className={styles.fileInput}
+      />
+      {image && (
+        <div className={styles.imageContainer}>
+          <img
+            id="input-image"
+            src={image}
+            alt="Uploaded"
+            className={styles.uploadedImg}
+          />
+          <button onClick={recognizeImage} className={styles.recognizeBtn}>
+            Recognize Image
+          </button>
+        </div>
+      )}
+      {predictions && (
+        <div className={styles.predictionsContainer}>
+          <h3>Predictions:</h3>
+          <p className={styles.predictionText}>{predictions}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+#########################################################################################################################################################################
+
+Explanation:
+UI for Uploading and Displaying Results: Allows the user to upload an image and sends it to the backend server via axios.
+Handling Predictions: Displays the model's predictions once received.
+Step 2.3: Add Styling with CSS
+Create a file named styles/ImageRecognition.module.css:
+
+css CODE :
+#########################################################################################################################################################################
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  background-color: #f0f4f8;
+  min-height: 100vh;
+}
+
+.header {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.fileInput {
+  margin-bottom: 20px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.imageContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.uploadedImg {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.recognizeBtn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.recognizeBtn:hover {
+  background-color: #0056b3;
+}
+
+.predictionsContainer {
+  margin-top: 30px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+}
+
+.predictionText {
+  font-size: 1.2rem;
+  color: #555;
+}
+#########################################################################################################################################################################
+
+Explanation:
+The CSS file enhances the layout, making it visually appealing and more interactive.
+Added hover effects, rounded corners, and shadows to make the UI feel modern.
