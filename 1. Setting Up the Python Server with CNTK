@@ -13,7 +13,7 @@ Step 1.2: Create a Python Server (server.py)
 This server will accept image uploads, process them using CNTK, and return the recognition results.
 
 python CODE :
-
+#########################################################################################################################################################################
 from flask import Flask, request, jsonify
 from PIL import Image
 import cntk as C
@@ -53,6 +53,7 @@ def predict():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+#########################################################################################################################################################################
 
 Explanation:
 Flask Server: Handles HTTP POST requests. When an image is sent, it processes it and sends back predictions.
