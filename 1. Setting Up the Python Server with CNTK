@@ -1,0 +1,10 @@
+Since CNTK (Microsoft Cognitive Toolkit) is primarily a Python-based machine learning library, we start by setting up a Python server to handle the image processing tasks.
+
+Step 1.1: Install Required Python Packages
+You need to install:
+
+cntk: The core AI library that allows you to load and run machine learning models.
+flask: A lightweight web server to handle requests from the Next.js front-end.
+pillow: For handling and processing image files.
+
+>> pip install cntk flask pillow
